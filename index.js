@@ -1,29 +1,42 @@
-import express from "express";
-import cors from "cors";
+import express from 'express';
+import cors from 'cors';
 
 const server = express();
-server.use = (cors());
+server.use(cors());
+server.use(express.json())
 
-const usuario = [
-    {
-	username: 'bobesponja', 
-	avatar: "https://super.abril.com.br/wp-content/uploads/2020/09/04-09_gato_SITE.jpg?quality=70&strip=info" 
-    }
-];
 
-const tweet = [
-    {
-        username: "bobesponja",
-      tweet: "eu amo o hub"
-    }
-];
+const usuarios = [];
 
-server.get('/sign-up', function (request, response) {
-    response.send(usuario);
+const tweet = [];
+
+
+server.post('/sign-up', function (req, res) {
+    const novoUsuario = req.body;
+
+    usuarios.push(novoUsuario);
+
+    res.send('OK');
 })
 
-server.get('/tweets', function (request, response) {
-    response.send(tweet);
+server.post('/tweets', function (req, res) {
+    const novoTweet = req.body;
+
+    const usuarioAtual = usuarios.find(usuario => novoTweet.username === usuario.username)
+
+    const tweetAvatar = {...novoTweet, 'avatar' : usuarioAtual.avatar};
+
+    tweet.unshift(tweetAvatar);
+
+    res.send('OK');
+})
+
+server.get('/tweets', function (req, res) {
+    
+    //const ultimosTweets = tweet.reverse();
+    const dezTweets = tweet.slice(0, 10);
+
+    res.send(dezTweets);
 })
 
 server.listen(5000);
