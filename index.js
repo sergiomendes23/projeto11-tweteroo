@@ -3,7 +3,7 @@ import cors from 'cors';
 
 const server = express();
 server.use(cors());
-server.use(express.json())
+server.use(express.json());
 
 
 const usuarios = [];
@@ -33,7 +33,6 @@ server.post('/tweets', function (req, res) {
 
 server.get('/tweets', function (req, res) {
     
-    //const ultimosTweets = tweet.reverse();
     const dezTweets = tweet.slice(0, 10);
 
     res.send(dezTweets);
